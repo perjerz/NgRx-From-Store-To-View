@@ -1,0 +1,152 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "",
+  "projects": {
+    "e-commerce": {
+      "root": "apps/e-commerce/",
+      "sourceRoot": "apps/e-commerce/src",
+      "projectType": "application",
+      "prefix": "eCommerce",
+      "schematics": {
+        "@schematics/angular:component": {
+          "styleext": "scss",
+          "spec": false
+        },
+        "@schematics/angular:class": {
+          "spec": false
+        },
+        "@schematics/angular:directive": {
+          "spec": false
+        },
+        "@schematics/angular:guard": {
+          "spec": false
+        },
+        "@schematics/angular:module": {
+          "spec": false
+        },
+        "@schematics/angular:pipe": {
+          "spec": false
+        },
+        "@schematics/angular:service": {
+          "spec": false
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/e-commerce",
+            "index": "apps/e-commerce/src/index.html",
+            "main": "apps/e-commerce/src/main.ts",
+            "polyfills": "apps/e-commerce/src/polyfills.ts",
+            "tsConfig": "apps/e-commerce/tsconfig.app.json",
+            "assets": [
+              "apps/e-commerce/src/favicon.ico",
+              "apps/e-commerce/src/assets"
+            ],
+            "styles": [
+              "apps/e-commerce/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/e-commerce/src/environments/environment.ts",
+                  "with": "apps/e-commerce/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "e-commerce:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "e-commerce:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "e-commerce:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "apps/e-commerce/src/test.ts",
+            "polyfills": "apps/e-commerce/src/polyfills.ts",
+            "tsConfig": "apps/e-commerce/tsconfig.spec.json",
+            "karmaConfig": "apps/e-commerce/karma.conf.js",
+            "styles": [
+              "apps/e-commerce/src/styles.scss"
+            ],
+            "scripts": [],
+            "assets": [
+              "apps/e-commerce/src/favicon.ico",
+              "apps/e-commerce/src/assets"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/e-commerce/tsconfig.app.json",
+              "apps/e-commerce/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "e-commerce-e2e": {
+      "root": "apps/e-commerce-e2e/",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "apps/e-commerce-e2e/protractor.conf.js",
+            "devServerTarget": "e-commerce:serve"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "apps/e-commerce-e2e/tsconfig.e2e.json",
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "warnings": {
+      "typescriptMismatch": false,
+      "versionMismatch": false
+    },
+    "defaultCollection": "@nrwl/schematics"
+  },
+  "defaultProject": "e-commerce"
+}
