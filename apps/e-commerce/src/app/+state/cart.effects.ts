@@ -13,10 +13,10 @@ import {
   RemoveItem,
   ItemRemoved,
   CHECK_OUT,
-  CheckOut, ErrorAPI
+  CheckOut, ErrorAPI, EXAMPLE_ACTION
 } from './cart.actions';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, mapTo, switchMap, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
@@ -34,7 +34,7 @@ export class CartEffects {
       this.http
         .post<Item>('/item', { id: action.id, amount: action.amount })
         .pipe(
-          map(item => new ItemToCartAdded(action.id, action.amount)), // dispatch Action เพื่ออัพเดท item id, amount ไปที่ reducer
+          map(() => new ItemToCartAdded(action.id, action.amount)), // dispatch Action เพื่ออัพเดท item id, amount ไปที่ reducer
           catchError(err => {
             console.error(err);
             return of(new ErrorAPI(err));
@@ -85,7 +85,7 @@ export class CartEffects {
   @Effect({ dispatch: false })
   checkOut$ = this.actions$.pipe(
     ofType(CHECK_OUT),
-    switchMap((actiokn: CheckOut) => this.http.get('/checkout')),
+    switchMap((action: CheckOut) => this.http.get('/checkout')),
     tap(res => {
       this.router.navigate(['/bill']);
     }),
@@ -94,7 +94,11 @@ export class CartEffects {
       return of(err);
     })
   );
-
+  @Effect()
+  exampleAction$ = this.actions$.pipe(
+    ofType(EXAMPLE_ACTION),
+    mapTo(new ItemsListed({}))
+  );
   constructor(
     private http: HttpClient,
     private store: Store<CartState>,
